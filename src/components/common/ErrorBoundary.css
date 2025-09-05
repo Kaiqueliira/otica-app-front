@@ -1,0 +1,250 @@
+/* src/components/common/ErrorBoundary.css */
+.error-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  padding: 2rem;
+  background: var(--gray-50);
+}
+
+.error-container {
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  background: var(--white);
+  border-radius: var(--border-radius-xl);
+  padding: 3rem 2rem;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--gray-200);
+}
+
+.error-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  display: block;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.error-container h2 {
+  color: var(--gray-900);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.error-container p {
+  color: var(--gray-600);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.error-details {
+  margin-top: 2rem;
+  text-align: left;
+  background: var(--gray-50);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  border: 1px solid var(--gray-200);
+}
+
+.error-details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--gray-700);
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.error-details summary:hover {
+  background: var(--gray-100);
+}
+
+.error-stack {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--gray-900);
+  color: var(--gray-100);
+  border-radius: var(--border-radius);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .error-boundary {
+    padding: 1rem;
+    min-height: 40vh;
+  }
+
+  .error-container {
+    padding: 2rem 1.5rem;
+  }
+
+  .error-icon {
+    font-size: 3rem;
+  }
+
+  .error-container h2 {
+    font-size: 1.25rem;
+  }
+
+  .error-actions {
+    flex-direction: column;
+  }
+
+  .error-stack {
+    font-size: 0.7rem;
+  }
+}
+
+/* Estados específicos de erro */
+.error-network {
+  background: linear-gradient(135deg, var(--error-light), #fef2f2);
+}
+
+.error-network .error-icon::before {
+  content: "📡";
+}
+
+.error-404 {
+  background: linear-gradient(135deg, var(--warning-light), #fffbeb);
+}
+
+.error-404 .error-icon::before {
+  content: "🔍";
+}
+
+.error-500 {
+  background: linear-gradient(135deg, var(--error-light), #fef2f2);
+}
+
+.error-500 .error-icon::before {
+  content: "⚠️";
+}
+
+/* Loading state para retry */
+.error-actions .btn:disabled {
+  position: relative;
+  color: transparent;
+}
+
+.error-actions .btn:disabled::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spinner-spin 1s linear infinite;
+}
+
+/* Toast-like error notifications */
+.error-toast {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  max-width: 400px;
+  background: var(--white);
+  border-left: 4px solid var(--error-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem;
+  z-index: 9999;
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.error-toast-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--error-color);
+}
+
+.error-toast-body {
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.error-toast-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--gray-400);
+  font-size: 1.2rem;
+  padding: 0.25rem;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.error-toast-close:hover {
+  color: var(--gray-600);
+  background: var(--gray-100);
+}
+
+/* Animações de entrada */
+.error-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.error-slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
