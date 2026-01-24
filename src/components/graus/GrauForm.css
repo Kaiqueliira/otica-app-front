@@ -103,9 +103,9 @@ textarea.form-control {
 
 /* Colunas OD/OE */
 .olhos-container {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* espaçamento entre OD e OE */
 }
 
 .olho-section {
@@ -116,7 +116,7 @@ textarea.form-control {
 
 .grau-fields {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr); /* 4 campos na mesma linha */
   gap: 1rem;
 }
 
