@@ -9,6 +9,7 @@ import {
   BarChart3,
   Clock,
   CheckCircle,
+  Eye,
 } from "lucide-react";
 import "./Home.css";
 import { painelService } from "@/services/painelService";
@@ -16,6 +17,7 @@ import { Painel } from "@/types";
 
 const Home: React.FC = () => {
   const [painelData, setPainelData] = useState<Painel | null>(null);
+  const [showReceita, setShowReceita] = useState(false); // controle de exibição
 
   useEffect(() => {
     const obterDadosPainel = async () => {
@@ -60,7 +62,7 @@ const Home: React.FC = () => {
       description: "Gerenciar cadastro de clientes",
       icon: Users,
       link: "/clientes",
-      count: painelData?.clientes.toString() || "0",
+      count: painelData?.clientes?.toString() || "0",
       color: "primary",
     },
     {
@@ -68,7 +70,7 @@ const Home: React.FC = () => {
       description: "Consultar e gerenciar graus",
       icon: Search,
       link: "/graus",
-      count: painelData?.graus.toString() || "0",
+      count: painelData?.graus?.toString() || "0",
       color: "success",
     },
     {
@@ -76,7 +78,7 @@ const Home: React.FC = () => {
       description: "Acompanhar vendas e serviços",
       icon: Settings,
       link: "/servicos",
-      count: painelData?.servicos.toString() || "0",
+      count: painelData?.servicos?.toString() || "0",
       color: "warning",
     },
   ];
@@ -84,33 +86,26 @@ const Home: React.FC = () => {
   const stats = [
     {
       label: "Total de Clientes",
-      value: painelData?.clientes.toString() || "0",
+      value: painelData?.clientes?.toString() || "0",
       icon: Users,
-      change: "+12",
-      changeType: "positive",
     },
     {
       label: "Serviços Pendentes",
-      value: painelData?.servicosPendentes.toString() || "0",
+      value: painelData?.servicosPendentes?.toString() || "0",
       icon: Clock,
-      change: "-3",
-      changeType: "positive",
     },
     {
       label: "Concluídos Hoje",
-      value: painelData?.concluidosHoje.toString() || "0",
+      value: painelData?.concluidosHoje?.toString() || "0",
       icon: CheckCircle,
-      change: "+5",
-      changeType: "positive",
     },
     {
       label: "Receita Mensal",
       value: `R$ ${
-        painelData?.receitaMensal.toLocaleString("pt-BR") || "0,00"
+        painelData?.receitaMensal?.toLocaleString("pt-BR") || "0,00"
       }`,
       icon: BarChart3,
-      change: "+18%",
-      changeType: "positive",
+      isReceitaMensal: true, // flag para saber que tem controle de visualização
     },
   ];
 
@@ -118,7 +113,7 @@ const Home: React.FC = () => {
     <div className="page-container">
       {/* Header */}
       <div className="page-header">
-        <h1 className="page-title">Bem-vindo </h1>
+        <h1 className="page-title">Bem-vindo</h1>
         <p className="page-description">Sistema de gerenciamento</p>
       </div>
 
@@ -126,17 +121,28 @@ const Home: React.FC = () => {
       <div className="stats-grid">
         {stats.map((stat, index) => {
           const Icon = stat.icon;
+          const isReceita = stat.isReceitaMensal;
+
           return (
             <div key={index} className="stat-card">
               <div className="stat-icon">
                 <Icon size={24} />
               </div>
               <div className="stat-content">
-                <div className="stat-value">{stat.value}</div>
-                <div className="stat-label">{stat.label}</div>
-                <div className={`stat-change ${stat.changeType}`}>
-                  {/*    {stat.change} este mês */}
+                <div className="stat-value">
+                  {isReceita && !showReceita ? "••••••" : stat.value}
+                  {isReceita && (
+                    <button
+                      type="button"
+                      className="btn-eye-toggle"
+                      onClick={() => setShowReceita((prev) => !prev)}
+                      title={showReceita ? "Ocultar valor" : "Mostrar valor"}
+                    >
+                      <Eye size={18} />
+                    </button>
+                  )}
                 </div>
+                <div className="stat-label">{stat.label}</div>
               </div>
             </div>
           );
@@ -190,56 +196,6 @@ const Home: React.FC = () => {
           })}
         </div>
       </div>
-
-      {/* Recent Activity */}
-      {/*   <div className="section">
-        <h2 className="section-title">Atividade Recente</h2>
-        <div className="activity-card">
-          <div className="activity-list">
-            <div className="activity-item">
-              <div className="activity-icon success">
-                <CheckCircle size={16} />
-              </div>
-              <div className="activity-content">
-                <p>
-                  <strong>João Silva</strong> - Serviço concluído
-                </p>
-                <span className="activity-time">2 minutos atrás</span>
-              </div>
-            </div>
-
-            <div className="activity-item">
-              <div className="activity-icon primary">
-                <Users size={16} />
-              </div>
-              <div className="activity-content">
-                <p>
-                  <strong>Maria Santos</strong> - Novo cliente cadastrado
-                </p>
-                <span className="activity-time">15 minutos atrás</span>
-              </div>
-            </div>
-
-            <div className="activity-item">
-              <div className="activity-icon warning">
-                <Search size={16} />
-              </div>
-              <div className="activity-content">
-                <p>
-                  <strong>Pedro Costa</strong> - Grau atualizado
-                </p>
-                <span className="activity-time">1 hora atrás</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="activity-footer">
-            <Link to="/atividades" className="btn btn-outline btn-sm">
-              Ver todas as atividades
-            </Link>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };
