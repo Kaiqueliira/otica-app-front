@@ -110,14 +110,14 @@ const ClientesList: React.FC = () => {
           </div>
 
           <div className="page-actions">
-            <button
+            {/*    <button
               onClick={handleExport}
               className="btn btn-outline btn-sm"
               title="Exportar lista"
             >
               <Download size={16} />
               <span className="sm-hidden">Exportar</span>
-            </button>
+            </button> */}
 
             <Link to="/clientes/novo" className="btn btn-primary">
               <Plus size={16} />

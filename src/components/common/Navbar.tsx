@@ -81,7 +81,7 @@ const Navbar: React.FC = () => {
           {/* Brand/Logo */}
           <Link to="/" className="nav-brand" onClick={closeMenu}>
             <Eye className="brand-icon" size={32} />
-            <span className="brand-text">Ótica CRUD</span>
+            <span className="brand-text"></span>
           </Link>
 
           {/* Desktop Menu */}

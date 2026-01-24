@@ -133,14 +133,14 @@ const GrausList: React.FC = () => {
           </div>
 
           <div className="page-actions">
-            <button
+            {/*     <button
               onClick={() => console.log("Exportar graus")}
               className="btn btn-outline btn-sm"
               title="Exportar lista"
             >
               <Download size={16} />
               <span className="sm-hidden">Exportar</span>
-            </button>
+            </button> */}
 
             <Link to="/graus/novo" className="btn btn-primary">
               <Plus size={16} />

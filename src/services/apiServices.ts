@@ -18,11 +18,9 @@ const api: AxiosInstance = axios.create({
 // Interceptador de requisições
 api.interceptors.request.use(
   (config) => {
-    console.log(`🚀 ${config.method?.toUpperCase()} ${config.url}`);
     return config;
   },
   (error: AxiosError) => {
-    console.error("❌ Erro na requisição:", error);
     return Promise.reject(error);
   }
 );
@@ -30,20 +28,9 @@ api.interceptors.request.use(
 // Interceptador de respostas
 api.interceptors.response.use(
   (response: AxiosResponse) => {
-    console.log(
-      `✅ ${response.config.method?.toUpperCase()} ${response.config.url} - ${
-        response.status
-      }`
-    );
     return response;
   },
   (error: AxiosError<any>) => {
-    console.error(
-      `❌ ${error.config?.method?.toUpperCase()} ${error.config?.url} - ${
-        error.response?.status
-      }`
-    );
-
     // Tratamento de erros globais
     if (error.response) {
       const { status, data } = error.response;

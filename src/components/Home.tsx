@@ -1,5 +1,5 @@
 // src/components/Home.tsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Users,
@@ -11,8 +11,25 @@ import {
   CheckCircle,
 } from "lucide-react";
 import "./Home.css";
+import { painelService } from "@/services/painelService";
+import { Painel } from "@/types";
 
 const Home: React.FC = () => {
+  const [painelData, setPainelData] = useState<Painel | null>(null);
+
+  useEffect(() => {
+    const obterDadosPainel = async () => {
+      try {
+        const painel = await painelService.getInfo();
+        setPainelData(painel);
+      } catch (error) {
+        console.error("Erro ao carregar dados do painel:", error);
+      }
+    };
+
+    obterDadosPainel();
+  }, []);
+
   const quickActions = [
     {
       title: "Novo Cliente",
@@ -43,7 +60,7 @@ const Home: React.FC = () => {
       description: "Gerenciar cadastro de clientes",
       icon: Users,
       link: "/clientes",
-      count: "156",
+      count: painelData?.clientes.toString() || "0",
       color: "primary",
     },
     {
@@ -51,7 +68,7 @@ const Home: React.FC = () => {
       description: "Consultar e gerenciar graus",
       icon: Search,
       link: "/graus",
-      count: "89",
+      count: painelData?.graus.toString() || "0",
       color: "success",
     },
     {
@@ -59,7 +76,7 @@ const Home: React.FC = () => {
       description: "Acompanhar vendas e serviços",
       icon: Settings,
       link: "/servicos",
-      count: "234",
+      count: painelData?.servicos.toString() || "0",
       color: "warning",
     },
   ];
@@ -67,28 +84,30 @@ const Home: React.FC = () => {
   const stats = [
     {
       label: "Total de Clientes",
-      value: "156",
+      value: painelData?.clientes.toString() || "0",
       icon: Users,
       change: "+12",
       changeType: "positive",
     },
     {
       label: "Serviços Pendentes",
-      value: "8",
+      value: painelData?.servicosPendentes.toString() || "0",
       icon: Clock,
       change: "-3",
       changeType: "positive",
     },
     {
       label: "Concluídos Hoje",
-      value: "23",
+      value: painelData?.concluidosHoje.toString() || "0",
       icon: CheckCircle,
       change: "+5",
       changeType: "positive",
     },
     {
       label: "Receita Mensal",
-      value: "R$ 12.5k",
+      value: `R$ ${
+        painelData?.receitaMensal.toLocaleString("pt-BR") || "0,00"
+      }`,
       icon: BarChart3,
       change: "+18%",
       changeType: "positive",
@@ -99,10 +118,8 @@ const Home: React.FC = () => {
     <div className="page-container">
       {/* Header */}
       <div className="page-header">
-        <h1 className="page-title">Bem-vindo à Ótica CRUD</h1>
-        <p className="page-description">
-          Sistema de gerenciamento completo para sua ótica
-        </p>
+        <h1 className="page-title">Bem-vindo </h1>
+        <p className="page-description">Sistema de gerenciamento</p>
       </div>
 
       {/* Stats Cards */}
@@ -118,7 +135,7 @@ const Home: React.FC = () => {
                 <div className="stat-value">{stat.value}</div>
                 <div className="stat-label">{stat.label}</div>
                 <div className={`stat-change ${stat.changeType}`}>
-                  {stat.change} este mês
+                  {/*    {stat.change} este mês */}
                 </div>
               </div>
             </div>
@@ -175,7 +192,7 @@ const Home: React.FC = () => {
       </div>
 
       {/* Recent Activity */}
-      <div className="section">
+      {/*   <div className="section">
         <h2 className="section-title">Atividade Recente</h2>
         <div className="activity-card">
           <div className="activity-list">
@@ -222,7 +239,7 @@ const Home: React.FC = () => {
             </Link>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

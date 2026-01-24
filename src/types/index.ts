@@ -1,4 +1,13 @@
 // src/types/index.ts
+
+export interface Painel {
+  graus: number;
+  servicos: number;
+  clientes: number;
+  receitaMensal: number;
+  concluidosHoje: number;
+  servicosPendentes: number;
+}
 export interface Cliente {
   id: number;
   nome: string;

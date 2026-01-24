@@ -127,7 +127,9 @@ export function useForm<T extends Record<string, any>>(
     validate,
     reset,
     setFormValues,
-    isValid: Object.keys(errors).length === 0,
+    isValid:
+      Object.values(errors).every((error) => !error) &&
+      Object.keys(touched).length > 0,
     isDirty: Object.keys(touched).length > 0,
   };
 }

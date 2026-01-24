@@ -52,9 +52,10 @@ const ClienteForm: React.FC = () => {
     },
     cpf: (value: string) => {
       if (!isEditing) {
-        if (!value.trim()) return "CPF é obrigatório";
-        if (value.length !== 11) return "CPF deve ter 11 dígitos";
-        if (!/^\d+$/.test(value)) return "CPF deve conter apenas números";
+        const raw = (value ?? "").replace(/\D/g, ""); // tira máscara
+        if (!raw) return "CPF é obrigatório";
+        if (raw.length !== 11) return "CPF deve ter 11 dígitos";
+        if (!/^\d+$/.test(raw)) return "CPF deve conter apenas números";
       }
       return undefined;
     },
@@ -98,7 +99,6 @@ const ClienteForm: React.FC = () => {
         try {
           setInitialLoading(true);
           const cliente = await clienteService.getById(parseInt(id));
-
           setFormValues({
             nome: cliente.nome,
             cpf: cliente.cpf,
@@ -140,7 +140,7 @@ const ClienteForm: React.FC = () => {
       } else {
         const createData: CreateClienteDto = {
           nome: values.nome,
-          cpf: values.cpf,
+          cpf: values.cpf.replace(/\D/g, ""),
           email: values.email,
           telefone: values.telefone,
           endereco: values.endereco,

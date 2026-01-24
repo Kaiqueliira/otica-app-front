@@ -124,9 +124,9 @@ const ServicosList: React.FC = () => {
         <button className="btn btn-outline">
           <Filter size={14} /> Filtros
         </button>
-        <button className="btn btn-outline">
+        {/*  <button className="btn btn-outline">
           <Download size={14} /> Exportar
-        </button>
+        </button> */}
       </div>
 
       {filteredServicos.length === 0 ? (
