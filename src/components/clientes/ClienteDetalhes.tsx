@@ -32,7 +32,7 @@ const ClienteDetalhes: React.FC = () => {
   const [servicos, setServicos] = useState<Servico[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"info" | "graus" | "servicos">(
-    "info"
+    "info",
   );
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const ClienteDetalhes: React.FC = () => {
 
     if (
       window.confirm(
-        `Tem certeza que deseja excluir o cliente "${cliente.nome}"?`
+        `Tem certeza que deseja excluir o cliente "${cliente.nome}"?`,
       )
     ) {
       try {
@@ -187,7 +187,9 @@ const ClienteDetalhes: React.FC = () => {
           <div className="stat-label">Serviços Realizados</div>
         </div>
         <div className="stat-item">
-          <div className="stat-value">{getIdade(cliente.dataNascimento)}</div>
+          <div className="stat-value">
+            {cliente.dataNascimento && getIdade(cliente?.dataNascimento)}
+          </div>
           <div className="stat-label">Anos de Idade</div>
         </div>
         <div className="stat-item">
@@ -252,8 +254,12 @@ const ClienteDetalhes: React.FC = () => {
                       <Calendar size={16} /> Data de Nascimento:
                     </label>
                     <span>
-                      {formatDate(cliente.dataNascimento)} (
-                      {getIdade(cliente.dataNascimento)} anos)
+                      {cliente.dataNascimento &&
+                        formatDate(cliente.dataNascimento)}{" "}
+                      (
+                      {cliente.dataNascimento &&
+                        getIdade(cliente.dataNascimento)}{" "}
+                      anos)
                     </span>
                   </div>
                   <div className="info-item">
@@ -420,8 +426,8 @@ const ClienteDetalhes: React.FC = () => {
                               servico.status === 1
                                 ? "warning"
                                 : servico.status === 2
-                                ? "success"
-                                : "danger"
+                                  ? "success"
+                                  : "danger"
                             }`}
                           >
                             {servico.statusDescricao}

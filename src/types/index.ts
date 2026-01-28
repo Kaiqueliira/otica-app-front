@@ -15,17 +15,17 @@ export interface Cliente {
   email?: string;
   telefone?: string;
   endereco?: string;
-  dataNascimento: string;
+  dataNascimento?: string;
   dataCadastro: string;
 }
 
 export interface CreateClienteDto {
   nome: string;
-  cpf: string;
+  cpf?: string;
   email?: string;
   telefone?: string;
   endereco?: string;
-  dataNascimento: string;
+  dataNascimento?: string;
 }
 
 export interface UpdateClienteDto {
@@ -156,12 +156,12 @@ export interface UseFormResult<T> {
   handleChange: (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => void;
   handleBlur: (
     e: React.FocusEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => void;
   validate: () => boolean;
   reset: () => void;

@@ -72,7 +72,7 @@ const ClienteForm: React.FC = () => {
       return undefined;
     },
     dataNascimento: (value: string) => {
-      if (!value) return "Data de nascimento é obrigatória";
+      if (!value) return undefined;
       const date = new Date(value);
       const today = new Date();
       if (date >= today)
@@ -105,7 +105,9 @@ const ClienteForm: React.FC = () => {
             email: cliente.email || "",
             telefone: cliente.telefone || "",
             endereco: cliente.endereco || "",
-            dataNascimento: cliente.dataNascimento.split("T")[0],
+            dataNascimento: values.dataNascimento
+              ? new Date(values.dataNascimento).toISOString()
+              : undefined,
           });
         } catch (error) {
           console.error("Erro ao carregar cliente:", error);
@@ -144,9 +146,13 @@ const ClienteForm: React.FC = () => {
           email: values.email,
           telefone: values.telefone,
           endereco: values.endereco,
-          dataNascimento: new Date(values.dataNascimento).toISOString(),
+          dataNascimento: values.dataNascimento
+            ? new Date(values.dataNascimento).toISOString()
+            : undefined,
         };
-        await clienteService.create(createData);
+        const { id } = await clienteService.create(createData);
+        navigate(`/graus/novo?clienteId=${id}`);
+        return;
       }
 
       navigate("/clientes");
@@ -282,7 +288,7 @@ const ClienteForm: React.FC = () => {
             )}
 
             <div className="form-group">
-              <label htmlFor="dataNascimento" className="form-label required">
+              <label htmlFor="dataNascimento" className="form-label">
                 <Calendar size={16} />
                 Data de Nascimento
               </label>
