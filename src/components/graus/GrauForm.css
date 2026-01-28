@@ -116,7 +116,7 @@ textarea.form-control {
 
 .grau-fields {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 campos na mesma linha */
+  grid-template-columns: repeat(5, 1fr); /* 4 campos na mesma linha */
   gap: 1rem;
 }
 

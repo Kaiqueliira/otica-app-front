@@ -49,6 +49,8 @@ export interface GrauLente {
   dpoe: number;
   observacoes?: string;
   dataReceita: string;
+  adicaoOD: number;
+  adicaoOE: number;
 }
 
 export interface CreateGrauLenteDto {
@@ -63,6 +65,8 @@ export interface CreateGrauLenteDto {
   dpoe: number;
   observacoes?: string;
   dataReceita: string;
+  adicaoOD: number;
+  adicaoOE: number;
 }
 
 export enum TipoServico {

@@ -29,6 +29,8 @@ interface GrauFormData {
   dpoe: string;
   observacoes: string;
   dataReceita: string;
+  adicaoOD: string;
+  adicaoOE: string;
 }
 
 const GrauForm: React.FC = () => {
@@ -55,6 +57,8 @@ const GrauForm: React.FC = () => {
     dpoe: "32.0",
     observacoes: "",
     dataReceita: new Date().toISOString().split("T")[0],
+    adicaoOD: "0.00",
+    adicaoOE: "0.00",
   };
 
   const validationRules = {
@@ -110,6 +114,18 @@ const GrauForm: React.FC = () => {
       if (num < 20 || num > 40) return "Valor deve estar entre 20 e 40";
       return undefined;
     },
+    adicaoOD: (value: string) => {
+      const num = parseFloat(value);
+      if (isNaN(num)) return "Valor inválido";
+      if (num < 0 || num > 180) return "Valor deve estar entre 0 e 180";
+      return undefined;
+    },
+    adicaoOE: (value: string) => {
+      const num = parseFloat(value);
+      if (isNaN(num)) return "Valor inválido";
+      if (num < 0 || num > 180) return "Valor deve estar entre 0 e 180";
+      return undefined;
+    },
     dataReceita: (value: string) => {
       if (!value) return "Data da receita é obrigatória";
       const date = new Date(value);
@@ -140,7 +156,7 @@ const GrauForm: React.FC = () => {
         // Se houver cliente pré-selecionado
         if (preSelectedClienteId) {
           const cliente = clientesData.find(
-            (c) => c.id === parseInt(preSelectedClienteId)
+            (c) => c.id === parseInt(preSelectedClienteId),
           );
           setSelectedCliente(cliente || null);
         }
@@ -158,7 +174,6 @@ const GrauForm: React.FC = () => {
         try {
           setInitialLoading(true);
           const grau = await grauService.getById(parseInt(id));
-
           setFormValues({
             clienteId: grau.clienteId.toString(),
             esfericoOD: grau.esfericoOD.toString(),
@@ -171,6 +186,10 @@ const GrauForm: React.FC = () => {
             dpoe: grau.dpoe.toString(),
             observacoes: grau.observacoes || "",
             dataReceita: grau.dataReceita.split("T")[0],
+            adicaoOD: grau.adicaoOD.toString(),
+            adicaoOE: grau.adicaoOE.toString(),
+            /*  ,
+            adicaoOE: grau.adicaoOE.toString(), */
           });
 
           const cliente = clientes.find((c) => c.id === grau.clienteId);
@@ -209,12 +228,16 @@ const GrauForm: React.FC = () => {
         dpoe: parseFloat(values.dpoe),
         observacoes: values.observacoes,
         dataReceita: new Date(values.dataReceita).toISOString(),
+        adicaoOD: parseFloat(values.adicaoOD),
+        adicaoOE: parseFloat(values.adicaoOE),
       };
 
       if (isEditing && id) {
         await grauService.update(parseInt(id), grauData);
       } else {
         await grauService.create(grauData);
+        navigate(`/servicos/novo?clienteId=${values.clienteId}`);
+        return;
       }
 
       navigate("/graus");
@@ -238,6 +261,7 @@ const GrauForm: React.FC = () => {
       cilindricoOE: values.cilindricoOD,
       eixoOE: values.eixoOD,
       dpoe: values.dpod,
+      adicaoOE: values.adicaoOD,
     });
   };
 
@@ -290,7 +314,7 @@ const GrauForm: React.FC = () => {
               CPF:{" "}
               {selectedCliente.cpf.replace(
                 /(\d{3})(\d{3})(\d{3})(\d{2})/,
-                "$1.$2.$3-$4"
+                "$1.$2.$3-$4",
               )}
             </p>
           </div>
@@ -327,7 +351,7 @@ const GrauForm: React.FC = () => {
                     {cliente.nome} -{" "}
                     {cliente.cpf.replace(
                       /(\d{3})(\d{3})(\d{3})(\d{2})/,
-                      "$1.$2.$3-$4"
+                      "$1.$2.$3-$4",
                     )}
                   </option>
                 ))}
@@ -440,7 +464,6 @@ const GrauForm: React.FC = () => {
                   <span className="form-error">{errors.eixoOD}</span>
                 )}
               </div>
-
               <div className="form-group">
                 <label htmlFor="dpod" className="form-label">
                   DP (mm)
@@ -462,6 +485,29 @@ const GrauForm: React.FC = () => {
                 />
                 {errors.dpod && touched.dpod && (
                   <span className="form-error">{errors.dpod}</span>
+                )}
+              </div>
+              <div className="form-group">
+                <label htmlFor="adicaoOD" className="form-label">
+                  Adição
+                </label>
+                <input
+                  type="number"
+                  id="adicaoOD"
+                  name="adicaoOD"
+                  value={values.adicaoOD}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  className={`form-control ${
+                    errors.adicaoOD && touched.adicaoOD ? "error" : ""
+                  }`}
+                  disabled={loading}
+                  step="0.5"
+                  min="0"
+                  max="180"
+                />
+                {errors.adicaoOD && touched.adicaoOD && (
+                  <span className="form-error">{errors.adicaoOD}</span>
                 )}
               </div>
             </div>
@@ -580,6 +626,30 @@ const GrauForm: React.FC = () => {
                 />
                 {errors.dpoe && touched.dpoe && (
                   <span className="form-error">{errors.dpoe}</span>
+                )}
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="adicaoOE" className="form-label">
+                  Adição
+                </label>
+                <input
+                  type="number"
+                  id="adicaoOE"
+                  name="adicaoOE"
+                  value={values.adicaoOE}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  className={`form-control ${
+                    errors.adicaoOE && touched.adicaoOE ? "error" : ""
+                  }`}
+                  disabled={loading}
+                  step="0.5"
+                  min="0"
+                  max="180"
+                />
+                {errors.adicaoOE && touched.adicaoOE && (
+                  <span className="form-error">{errors.adicaoOE}</span>
                 )}
               </div>
             </div>

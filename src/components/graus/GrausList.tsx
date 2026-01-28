@@ -69,7 +69,7 @@ const GrausList: React.FC = () => {
   const handleDelete = async (id: number, clienteNome: string) => {
     if (
       window.confirm(
-        `Tem certeza que deseja excluir o grau do cliente "${clienteNome}"?`
+        `Tem certeza que deseja excluir o grau do cliente "${clienteNome}"?`,
       )
     ) {
       try {
@@ -256,6 +256,10 @@ const GrausList: React.FC = () => {
                           <span className="label">DP:</span>
                           <span className="value">{grau.dpod}</span>
                         </div>
+                        <div className="grau-value">
+                          <span className="label">AD:</span>
+                          <span className="value">{grau.adicaoOD}</span>
+                        </div>
                       </div>
                     </td>
                     <td>
@@ -279,6 +283,10 @@ const GrausList: React.FC = () => {
                         <div className="grau-value">
                           <span className="label">DP:</span>
                           <span className="value">{grau.dpoe}</span>
+                        </div>
+                        <div className="grau-value">
+                          <span className="label">AD:</span>
+                          <span className="value">{grau.adicaoOE}</span>
                         </div>
                       </div>
                     </td>
@@ -309,7 +317,7 @@ const GrausList: React.FC = () => {
                           onClick={() =>
                             handleDelete(
                               grau.id,
-                              getClienteNome(grau.clienteId)
+                              getClienteNome(grau.clienteId),
                             )
                           }
                           className="btn btn-icon btn-sm btn-danger"

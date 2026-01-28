@@ -359,6 +359,7 @@ const ClienteDetalhes: React.FC = () => {
                             <span>Cil: {grau.cilindricoOD}</span>
                             <span>Eixo: {grau.eixoOD}°</span>
                             <span>DP: {grau.dpod}</span>
+                            <span>AD: {grau.adicaoOD}</span>
                           </div>
                         </div>
 
@@ -369,6 +370,7 @@ const ClienteDetalhes: React.FC = () => {
                             <span>Cil: {grau.cilindricoOE}</span>
                             <span>Eixo: {grau.eixoOE}°</span>
                             <span>DP: {grau.dpoe}</span>
+                            <span>AD: {grau.adicaoOE}</span>
                           </div>
                         </div>
                       </div>
