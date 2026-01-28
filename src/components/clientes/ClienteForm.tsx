@@ -53,7 +53,7 @@ const ClienteForm: React.FC = () => {
     cpf: (value: string) => {
       if (!isEditing) {
         const raw = (value ?? "").replace(/\D/g, ""); // tira máscara
-        if (!raw) return "CPF é obrigatório";
+        if (!raw) return undefined;
         if (raw.length !== 11) return "CPF deve ter 11 dígitos";
         if (!/^\d+$/.test(raw)) return "CPF deve conter apenas números";
       }
@@ -257,7 +257,7 @@ const ClienteForm: React.FC = () => {
 
             {!isEditing && (
               <div className="form-group">
-                <label htmlFor="cpf" className="form-label required">
+                <label htmlFor="cpf" className="form-label">
                   <CreditCard size={16} />
                   CPF
                 </label>
