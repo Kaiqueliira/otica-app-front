@@ -479,7 +479,7 @@ const GrauForm: React.FC = () => {
                     errors.adicaoOD && touched.adicaoOD ? "error" : ""
                   }`}
                   disabled={loading}
-                  step="0.5"
+                  step="0.25"
                   min="0"
                   max="180"
                 />
@@ -502,7 +502,7 @@ const GrauForm: React.FC = () => {
                     errors.dpod && touched.dpod ? "error" : ""
                   }`}
                   disabled={loading}
-                  step="0.5"
+                  step="0.25"
                   min="20"
                   max="40"
                 />
@@ -619,7 +619,7 @@ const GrauForm: React.FC = () => {
                     errors.adicaoOE && touched.adicaoOE ? "error" : ""
                   }`}
                   disabled={loading}
-                  step="0.5"
+                  step="0.25"
                   min="0"
                   max="180"
                 />
@@ -642,7 +642,7 @@ const GrauForm: React.FC = () => {
                     errors.dpoe && touched.dpoe ? "error" : ""
                   }`}
                   disabled={loading}
-                  step="0.5"
+                  step="0.25"
                   min="20"
                   max="40"
                 />
