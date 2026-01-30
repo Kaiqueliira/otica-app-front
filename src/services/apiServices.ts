@@ -4,12 +4,11 @@ import { toast } from "react-toastify";
 import type { ApiError } from "@/types";
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  import.meta.env.VITE_API_URL || "http://localhost:5057/api";
 
 // Configuração do axios
 const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000,
   headers: {
     "Content-Type": "application/json",
   },
@@ -22,7 +21,7 @@ api.interceptors.request.use(
   },
   (error: AxiosError) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Interceptador de respostas
@@ -63,7 +62,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;
@@ -71,7 +70,7 @@ export default api;
 // Funções utilitárias tipadas
 export const handleApiError = (
   error: AxiosError<ApiError>,
-  customMessage?: string
+  customMessage?: string,
 ): void => {
   console.error("API Error:", error);
   if (customMessage) {
