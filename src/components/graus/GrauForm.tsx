@@ -465,29 +465,6 @@ const GrauForm: React.FC = () => {
                 )}
               </div>
               <div className="form-group">
-                <label htmlFor="dpod" className="form-label">
-                  DP (mm)
-                </label>
-                <input
-                  type="number"
-                  id="dpod"
-                  name="dpod"
-                  value={values.dpod}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  className={`form-control ${
-                    errors.dpod && touched.dpod ? "error" : ""
-                  }`}
-                  disabled={loading}
-                  step="0.5"
-                  min="20"
-                  max="40"
-                />
-                {errors.dpod && touched.dpod && (
-                  <span className="form-error">{errors.dpod}</span>
-                )}
-              </div>
-              <div className="form-group">
                 <label htmlFor="adicaoOD" className="form-label">
                   Adição
                 </label>
@@ -508,6 +485,29 @@ const GrauForm: React.FC = () => {
                 />
                 {errors.adicaoOD && touched.adicaoOD && (
                   <span className="form-error">{errors.adicaoOD}</span>
+                )}
+              </div>
+              <div className="form-group">
+                <label htmlFor="dpod" className="form-label">
+                  DP (mm)
+                </label>
+                <input
+                  type="number"
+                  id="dpod"
+                  name="dpod"
+                  value={values.dpod}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  className={`form-control ${
+                    errors.dpod && touched.dpod ? "error" : ""
+                  }`}
+                  disabled={loading}
+                  step="0.5"
+                  min="20"
+                  max="40"
+                />
+                {errors.dpod && touched.dpod && (
+                  <span className="form-error">{errors.dpod}</span>
                 )}
               </div>
             </div>
@@ -604,31 +604,6 @@ const GrauForm: React.FC = () => {
                   <span className="form-error">{errors.eixoOE}</span>
                 )}
               </div>
-
-              <div className="form-group">
-                <label htmlFor="dpoe" className="form-label">
-                  DP (mm)
-                </label>
-                <input
-                  type="number"
-                  id="dpoe"
-                  name="dpoe"
-                  value={values.dpoe}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  className={`form-control ${
-                    errors.dpoe && touched.dpoe ? "error" : ""
-                  }`}
-                  disabled={loading}
-                  step="0.5"
-                  min="20"
-                  max="40"
-                />
-                {errors.dpoe && touched.dpoe && (
-                  <span className="form-error">{errors.dpoe}</span>
-                )}
-              </div>
-
               <div className="form-group">
                 <label htmlFor="adicaoOE" className="form-label">
                   Adição
@@ -650,6 +625,29 @@ const GrauForm: React.FC = () => {
                 />
                 {errors.adicaoOE && touched.adicaoOE && (
                   <span className="form-error">{errors.adicaoOE}</span>
+                )}
+              </div>
+              <div className="form-group">
+                <label htmlFor="dpoe" className="form-label">
+                  DP (mm)
+                </label>
+                <input
+                  type="number"
+                  id="dpoe"
+                  name="dpoe"
+                  value={values.dpoe}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  className={`form-control ${
+                    errors.dpoe && touched.dpoe ? "error" : ""
+                  }`}
+                  disabled={loading}
+                  step="0.5"
+                  min="20"
+                  max="40"
+                />
+                {errors.dpoe && touched.dpoe && (
+                  <span className="form-error">{errors.dpoe}</span>
                 )}
               </div>
             </div>

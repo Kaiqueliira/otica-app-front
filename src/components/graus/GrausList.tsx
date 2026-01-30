@@ -253,12 +253,12 @@ const GrausList: React.FC = () => {
                           <span className="value">{grau.eixoOD}°</span>
                         </div>
                         <div className="grau-value">
-                          <span className="label">DP:</span>
-                          <span className="value">{grau.dpod}</span>
-                        </div>
-                        <div className="grau-value">
                           <span className="label">AD:</span>
                           <span className="value">{grau.adicaoOD}</span>
+                        </div>
+                        <div className="grau-value">
+                          <span className="label">DP:</span>
+                          <span className="value">{grau.dpod}</span>
                         </div>
                       </div>
                     </td>
@@ -281,12 +281,12 @@ const GrausList: React.FC = () => {
                           <span className="value">{grau.eixoOE}°</span>
                         </div>
                         <div className="grau-value">
-                          <span className="label">DP:</span>
-                          <span className="value">{grau.dpoe}</span>
-                        </div>
-                        <div className="grau-value">
                           <span className="label">AD:</span>
                           <span className="value">{grau.adicaoOE}</span>
+                        </div>
+                        <div className="grau-value">
+                          <span className="label">DP:</span>
+                          <span className="value">{grau.dpoe}</span>
                         </div>
                       </div>
                     </td>
