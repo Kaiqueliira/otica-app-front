@@ -15,6 +15,7 @@ import {
   Settings,
   Plus,
   Eye,
+  FileText,
 } from "lucide-react";
 import { clienteService } from "@/services/clienteService";
 import { grauService } from "@/services/grauService";
@@ -22,6 +23,9 @@ import { servicoService } from "@/services/servicoService";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import type { Cliente, GrauLente, Servico } from "@/types";
 import "./ClienteDetalhes.css";
+import OsModal from "./OsModal";
+import ordemServicoService, { OrdemServicoDto } from "@/services/ordemServicoService";
+import { Printer } from "lucide-react";
 
 const ClienteDetalhes: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -30,8 +34,10 @@ const ClienteDetalhes: React.FC = () => {
   const [cliente, setCliente] = useState<Cliente | null>(null);
   const [graus, setGraus] = useState<GrauLente[]>([]);
   const [servicos, setServicos] = useState<Servico[]>([]);
+  const [ordensServico, setOrdensServico] = useState<OrdemServicoDto[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"info" | "graus" | "servicos">(
+  const [isOsModalOpen, setIsOsModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<"info" | "graus" | "servicos" | "os">(
     "info",
   );
 
@@ -46,15 +52,17 @@ const ClienteDetalhes: React.FC = () => {
         setLoading(true);
         const clienteId = parseInt(id);
 
-        const [clienteData, grausData, servicosData] = await Promise.all([
+        const [clienteData, grausData, servicosData, osData] = await Promise.all([
           clienteService.getById(clienteId),
           grauService.getByClienteId(clienteId),
           servicoService.getByClienteId(clienteId),
+          ordemServicoService.getByClienteId(clienteId),
         ]);
 
         setCliente(clienteData);
         setGraus(grausData);
         setServicos(servicosData);
+        setOrdensServico(osData);
       } catch (error) {
         console.error("Erro ao carregar dados do cliente:", error);
         navigate("/clientes");
@@ -160,6 +168,13 @@ const ClienteDetalhes: React.FC = () => {
           </div>
 
           <div className="page-actions">
+            <button
+              onClick={() => setIsOsModalOpen(true)}
+              className="btn btn-primary"
+            >
+              <FileText size={16} />
+              Gerar Ordem de Serviço
+            </button>
             <Link
               to={`/clientes/editar/${cliente.id}`}
               className="btn btn-outline"
@@ -226,6 +241,13 @@ const ClienteDetalhes: React.FC = () => {
           >
             <Settings size={16} />
             Serviços ({servicos.length})
+          </button>
+          <button
+            className={`tab-button ${activeTab === 'os' ? 'active' : ''}`}
+            onClick={() => setActiveTab('os')}
+          >
+            <FileText size={16} />
+            Ordens de Serviço ({ordensServico.length})
           </button>
         </div>
 
@@ -455,8 +477,84 @@ const ClienteDetalhes: React.FC = () => {
               )}
             </div>
           )}
+        
+          {activeTab === 'os' && (
+            <div className="servicos-content">
+              <div className="section-header">
+                <h3>Ordens de Serviço</h3>
+              </div>
+
+              {ordensServico.length === 0 ? (
+                <div className="empty-state-small">
+                  <FileText size={32} />
+                  <p>Nenhuma OS registrada para este cliente</p>
+                </div>
+              ) : (
+                <div className="servicos-list">
+                  {ordensServico.map((os) => (
+                    <div key={os.id} className="servico-card">
+                      <div className="servico-header">
+                        <div className="servico-info">
+                          <h4>{os.numeroOS} - {os.tipo}</h4>
+                          <span className="servico-date">
+                            Gerado em: {formatDate(os.dataCriacao)}
+                          </span>
+                        </div>
+                        <div className="servico-actions">
+                          <button 
+                            onClick={async () => {
+                              try {
+                                const html = await ordemServicoService.getHtml(os.id);
+                                const blob = new Blob([html], { type: 'text/html' });
+                                const url = URL.createObjectURL(blob);
+                                window.open(url, '_blank');
+                              } catch (e) { alert('Erro ao reimprimir OS'); }
+                            }}
+                            className="btn btn-primary btn-sm" title="Reimprimir O.S">
+                            <Printer size={14} />
+                            Imprimir
+                          </button>
+                          <button 
+                            onClick={async () => {
+                              if (window.confirm('Tem certeza que deseja excluir esta Ordem de Serviço?')) {
+                                try {
+                                  await ordemServicoService.delete(os.id);
+                                  setOrdensServico(prev => prev.filter(o => o.id !== os.id));
+                                } catch(e) { alert('Erro ao excluir O.S.'); }
+                              }
+                            }}
+                            className="btn btn-danger btn-sm" style={{marginLeft: '8px'}} title="Excluir O.S">
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="servico-body">
+                        <p className="servico-descricao">Entrega Prevista: {os.dataEntregaPrevista ? formatDate(os.dataEntregaPrevista) : 'Não informada'}</p>
+                        <div className="servico-valor">
+                          <strong>Valor Total: R$ {os.valorTotal.toFixed(2)}</strong>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
+
+      {isOsModalOpen && (
+        <OsModal
+          clienteId={cliente.id}
+          graus={graus}
+          servicos={servicos}
+          onClose={() => { 
+            setIsOsModalOpen(false);
+            ordemServicoService.getByClienteId(cliente.id).then(setOrdensServico);
+          }}
+        />
+      )}
     </div>
   );
 };
