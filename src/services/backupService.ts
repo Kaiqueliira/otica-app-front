@@ -8,6 +8,13 @@ export const backupService = {
     return response.data;
   },
 
+  exportBackupJson: async (): Promise<Blob> => {
+    const response = await api.get("/Backup/export/json", {
+      responseType: "blob",
+    });
+    return response.data;
+  },
+
   importBackup: async (file: File): Promise<void> => {
     const formData = new FormData();
     formData.append("file", file);
