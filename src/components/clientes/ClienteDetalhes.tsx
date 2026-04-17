@@ -24,7 +24,9 @@ import LoadingSpinner from "@/components/common/LoadingSpinner";
 import type { Cliente, GrauLente, Servico } from "@/types";
 import "./ClienteDetalhes.css";
 import OsModal from "./OsModal";
-import ordemServicoService, { OrdemServicoDto } from "@/services/ordemServicoService";
+import ordemServicoService, {
+  OrdemServicoDto,
+} from "@/services/ordemServicoService";
 import { Printer } from "lucide-react";
 
 const ClienteDetalhes: React.FC = () => {
@@ -37,9 +39,9 @@ const ClienteDetalhes: React.FC = () => {
   const [ordensServico, setOrdensServico] = useState<OrdemServicoDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [isOsModalOpen, setIsOsModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"info" | "graus" | "servicos" | "os">(
-    "info",
-  );
+  const [activeTab, setActiveTab] = useState<
+    "info" | "graus" | "servicos" | "os"
+  >("info");
 
   useEffect(() => {
     if (!id) {
@@ -52,12 +54,13 @@ const ClienteDetalhes: React.FC = () => {
         setLoading(true);
         const clienteId = parseInt(id);
 
-        const [clienteData, grausData, servicosData, osData] = await Promise.all([
-          clienteService.getById(clienteId),
-          grauService.getByClienteId(clienteId),
-          servicoService.getByClienteId(clienteId),
-          ordemServicoService.getByClienteId(clienteId),
-        ]);
+        const [clienteData, grausData, servicosData, osData] =
+          await Promise.all([
+            clienteService.getById(clienteId),
+            grauService.getByClienteId(clienteId),
+            servicoService.getByClienteId(clienteId),
+            ordemServicoService.getByClienteId(clienteId),
+          ]);
 
         setCliente(clienteData);
         setGraus(grausData);
@@ -173,7 +176,7 @@ const ClienteDetalhes: React.FC = () => {
               className="btn btn-primary"
             >
               <FileText size={16} />
-              Gerar Ordem de Serviço
+              Gerar O.S
             </button>
             <Link
               to={`/clientes/editar/${cliente.id}`}
@@ -243,8 +246,8 @@ const ClienteDetalhes: React.FC = () => {
             Serviços ({servicos.length})
           </button>
           <button
-            className={`tab-button ${activeTab === 'os' ? 'active' : ''}`}
-            onClick={() => setActiveTab('os')}
+            className={`tab-button ${activeTab === "os" ? "active" : ""}`}
+            onClick={() => setActiveTab("os")}
           >
             <FileText size={16} />
             Ordens de Serviço ({ordensServico.length})
@@ -477,8 +480,8 @@ const ClienteDetalhes: React.FC = () => {
               )}
             </div>
           )}
-        
-          {activeTab === 'os' && (
+
+          {activeTab === "os" && (
             <div className="servicos-content">
               <div className="section-header">
                 <h3>Ordens de Serviço</h3>
@@ -495,44 +498,72 @@ const ClienteDetalhes: React.FC = () => {
                     <div key={os.id} className="servico-card">
                       <div className="servico-header">
                         <div className="servico-info">
-                          <h4>{os.numeroOS} - {os.tipo}</h4>
+                          <h4>
+                            {os.numeroOS} - {os.tipo}
+                          </h4>
                           <span className="servico-date">
                             Gerado em: {formatDate(os.dataCriacao)}
                           </span>
                         </div>
                         <div className="servico-actions">
-                          <button 
+                          <button
                             onClick={async () => {
                               try {
-                                const html = await ordemServicoService.getHtml(os.id);
-                                const blob = new Blob([html], { type: 'text/html' });
+                                const html = await ordemServicoService.getHtml(
+                                  os.id,
+                                );
+                                const blob = new Blob([html], {
+                                  type: "text/html",
+                                });
                                 const url = URL.createObjectURL(blob);
-                                window.open(url, '_blank');
-                              } catch (e) { alert('Erro ao reimprimir OS'); }
+                                window.open(url, "_blank");
+                              } catch (e) {
+                                alert("Erro ao reimprimir OS");
+                              }
                             }}
-                            className="btn btn-primary btn-sm" title="Reimprimir O.S">
+                            className="btn btn-primary btn-sm"
+                            title="Reimprimir O.S"
+                          >
                             <Printer size={14} />
                             Imprimir
                           </button>
-                          <button 
+                          <button
                             onClick={async () => {
-                              if (window.confirm('Tem certeza que deseja excluir esta Ordem de Serviço?')) {
+                              if (
+                                window.confirm(
+                                  "Tem certeza que deseja excluir esta Ordem de Serviço?",
+                                )
+                              ) {
                                 try {
                                   await ordemServicoService.delete(os.id);
-                                  setOrdensServico(prev => prev.filter(o => o.id !== os.id));
-                                } catch(e) { alert('Erro ao excluir O.S.'); }
+                                  setOrdensServico((prev) =>
+                                    prev.filter((o) => o.id !== os.id),
+                                  );
+                                } catch (e) {
+                                  alert("Erro ao excluir O.S.");
+                                }
                               }
                             }}
-                            className="btn btn-danger btn-sm" style={{marginLeft: '8px'}} title="Excluir O.S">
+                            className="btn btn-danger btn-sm"
+                            style={{ marginLeft: "8px" }}
+                            title="Excluir O.S"
+                          >
                             <Trash2 size={14} />
                           </button>
                         </div>
                       </div>
 
                       <div className="servico-body">
-                        <p className="servico-descricao">Entrega Prevista: {os.dataEntregaPrevista ? formatDate(os.dataEntregaPrevista) : 'Não informada'}</p>
+                        <p className="servico-descricao">
+                          Entrega Prevista:{" "}
+                          {os.dataEntregaPrevista
+                            ? formatDate(os.dataEntregaPrevista)
+                            : "Não informada"}
+                        </p>
                         <div className="servico-valor">
-                          <strong>Valor Total: R$ {os.valorTotal.toFixed(2)}</strong>
+                          <strong>
+                            Valor Total: R$ {os.valorTotal.toFixed(2)}
+                          </strong>
                         </div>
                       </div>
                     </div>
@@ -549,9 +580,11 @@ const ClienteDetalhes: React.FC = () => {
           clienteId={cliente.id}
           graus={graus}
           servicos={servicos}
-          onClose={() => { 
+          onClose={() => {
             setIsOsModalOpen(false);
-            ordemServicoService.getByClienteId(cliente.id).then(setOrdensServico);
+            ordemServicoService
+              .getByClienteId(cliente.id)
+              .then(setOrdensServico);
           }}
         />
       )}

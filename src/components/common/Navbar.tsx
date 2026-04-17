@@ -1,7 +1,16 @@
 // src/components/common/Navbar.tsx
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Eye, Users, Search, Settings, Home } from "lucide-react";
+import {
+  Menu,
+  X,
+  Eye,
+  Users,
+  Search,
+  Settings,
+  Home,
+  Database,
+} from "lucide-react";
 import "./Navbar.css";
 
 interface NavItem {
@@ -19,6 +28,7 @@ const Navbar: React.FC = () => {
     { path: "/clientes", label: "Clientes", icon: Users },
     { path: "/graus", label: "Graus", icon: Search },
     { path: "/servicos", label: "Serviços", icon: Settings },
+    { path: "/configuracoes", label: "Configurações", icon: Database },
   ];
 
   const isActive = (path: string): boolean => {

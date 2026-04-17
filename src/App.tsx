@@ -15,21 +15,24 @@ import "./App.css";
 // Lazy loading dos componentes
 const Home = React.lazy(() => import("@/components/Home"));
 const ClientesList = React.lazy(
-  () => import("@/components/clientes/ClientesList")
+  () => import("@/components/clientes/ClientesList"),
 );
 const ClienteForm = React.lazy(
-  () => import("@/components/clientes/ClienteForm")
+  () => import("@/components/clientes/ClienteForm"),
 );
 const ClienteDetalhes = React.lazy(
-  () => import("@/components/clientes/ClienteDetalhes")
+  () => import("@/components/clientes/ClienteDetalhes"),
 );
 const GrausList = React.lazy(() => import("@/components/graus/GrausList"));
 const GrauForm = React.lazy(() => import("@/components/graus/GrauForm"));
 const ServicosList = React.lazy(
-  () => import("@/components/servicos/ServicosList")
+  () => import("@/components/servicos/ServicosList"),
 );
 const ServicoForm = React.lazy(
-  () => import("@/components/servicos/ServicoForm")
+  () => import("@/components/servicos/ServicoForm"),
+);
+const Configuracoes = React.lazy(
+  () => import("@/components/configuracoes/Configuracoes"),
 );
 
 function App(): JSX.Element {
@@ -61,6 +64,9 @@ function App(): JSX.Element {
                 <Route path="/servicos" element={<ServicosList />} />
                 <Route path="/servicos/novo" element={<ServicoForm />} />
                 <Route path="/servicos/editar/:id" element={<ServicoForm />} />
+
+                {/* Configurações */}
+                <Route path="/configuracoes" element={<Configuracoes />} />
 
                 {/* 404 */}
                 <Route
